@@ -1,19 +1,40 @@
 package com.example.funphoto;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
+    String username = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Obtener el username del intent
+        username = getIntent().getStringExtra("username");
+
+        // Buscar el TextView por su ID
+        TextView nombre_Usuario = findViewById(R.id.profileName);
+
+        // Establecer el texto del TextView como el username
+        nombre_Usuario.setText(username);
+
+        // Llamar al método para cargar los datos del usuario
+        cargarDatosUsuarios(username);
 
         // Buscar los ImageButtons por su ID
         ImageButton imageButtonSearch = findViewById(R.id.imageButton);
@@ -51,6 +72,57 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+    }
+
+    private void cargarDatosUsuarios(String username) {
+        // Imprimir el nombre de usuario para verificar si funciona
+        Log.d("Usuario_Main", "**************Username: " + username);
+
+        // Crear un objeto Data con los parámetros
+        Data inputData = new Data.Builder()
+                .putString("usuario", username)
+                .build();
+
+        Log.d("MainCargarDatUsu1", "Entra bien en Main");
+
+        // Crear una instancia de WorkManager y programar la tarea para carga   r los datos del usuario
+        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
+        OneTimeWorkRequest cargarDatosUserRequest = new OneTimeWorkRequest.Builder(LoadUserDataWorker.class)
+                .setInputData(inputData)
+                .build();
+        workManager.enqueue(cargarDatosUserRequest);
+
+        // Observar el resultado de la tarea
+        Log.d("MainCargarDatUsu2", "Entra bien en imprimir archivos");
+        workManager.getWorkInfoByIdLiveData(cargarDatosUserRequest.getId()).observe(MainActivity.this, workInfo -> {
+            if (workInfo != null && workInfo.getState().isFinished()) {
+                // La tarea ha finalizado
+                if (workInfo.getState() == androidx.work.WorkInfo.State.SUCCEEDED) {
+                    // Obtener los datos del usuario del resultado
+                    String userData = workInfo.getOutputData().getString("userData");
+                    Log.d("json222", "Valor de userData: " + userData);
+                    Log.d("MainCargarDatUsu3", "Entra bien en imprimir archivos");
+
+                    try {
+                        // Convertir la cadena JSON a JSONObject
+                        JSONObject jsonObject = new JSONObject(userData);
+                        Log.d("MainCargarDatUsu4", "Entra bien en imprimir archivos");
+
+                        // Mostrar los datos del usuario en el log
+                        Log.d("UserData", "Datos del usuario - Nombre: " + jsonObject.getString("Nombre") +
+                                ", Email: " + jsonObject.getString("Email") +
+                                ", Bio: " + jsonObject.getString("Bio"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("UserData", "Error al convertir la cadena JSON a JSONObject: " + e.getMessage());
+                    }
+                } else {
+                    // La tarea falló
+                    String message = "Inicio de sesión fallido. Verifica tus credenciales.";
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

@@ -65,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             // Redirigir a MainActivity
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.putExtra("username", username); // Aquí se añade el parámetro username al intent
                             startActivity(intent);
                             finish(); // Cerrar LoginActivity para que no se pueda volver atrás
                         } else {
