@@ -21,19 +21,23 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SignUpActivity extends AppCompatActivity {
 
     private EditText editTextUsername;
+    private EditText editTextName;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private ImageView imageViewProfile;
     private Button buttonTakePhoto;
     private Button buttonSignUp;
     private Button buttonCancel;
-    private String fotoEnBase64;
+    private String fotoPath;
 
 
     @Override
@@ -42,6 +46,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         editTextUsername = findViewById(R.id.editTextUsername);
+        editTextName = findViewById(R.id.editTextName);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
         imageViewProfile = findViewById(R.id.imageViewProfile);
@@ -73,73 +78,68 @@ public class SignUpActivity extends AppCompatActivity {
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Aquí deberías agregar la lógica para registrar al nuevo usuario
                 String newUsername = editTextUsername.getText().toString();
+                String newName = editTextName.getText().toString();
                 String newPassword = editTextPassword.getText().toString();
                 String newEmail = editTextEmail.getText().toString();
-                saveNewUser(newUsername,newPassword,newEmail,fotoEnBase64);
-                // Por ahora, solo mostraremos un mensaje de usuario registrado correctamente
-                String message = "Usuario registrado correctamente";
-                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                startActivity(intent);
-                // Luego de registrar, puedes regresar a LoginActivity
-                finish();
+                if (fotoPath != null) {
+                    saveNewUser(newUsername,newName, newPassword, newEmail, fotoPath);
+                    String message = "Usuario registrado correctamente";
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    // Luego de registrar, puedes regresar a LoginActivity
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Por favor, toma una foto antes de registrarte", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
     private ActivityResultLauncher<Intent> takePictureLauncher =
             registerForActivityResult(new
                     ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == RESULT_OK &&
-                        result.getData()!= null) {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     Bundle bundle = result.getData().getExtras();
                     Bitmap laminiatura = (Bitmap) bundle.get("data");
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    laminiatura.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    byte[] fototransformada = stream.toByteArray();
-                    fotoEnBase64 = Base64.encodeToString(fototransformada,Base64.DEFAULT);
-
                     imageViewProfile.setImageBitmap(laminiatura);
+                    fotoPath = saveImageToStorage(laminiatura);
                 } else {
-                    Log.d("TakenPicture", "No photo taken");
+                    Log.d("TakenPicture", "No se ha tomado ninguna foto");
                 }
             });
 
-    private void saveNewUser(String usuario, String contrasena,String email, String foto) {
-        int chunkSize = 1024; // Tamaño del fragmento, ajusta según sea necesario
-        List<String> chunks = splitBase64Image(foto, chunkSize);
-
-        for (int i = 0; i < chunks.size(); i++) {
-            String chunk = chunks.get(i);
-            // Crear un Data object con los parámetros
-            Data inputData = new Data.Builder()
-                    .putString("usuario", usuario)
-                    .putString("contrasena", contrasena)
-                    .putString("email", email)
-                    .putString("imagenChunk", chunk)
-                    .putBoolean("isLastChunk", i == chunks.size() - 1) // Marcar la última parte
-                    .build();
-
-            // Crear una instancia de WorkManager y programar la tarea
-            WorkManager workManager = WorkManager.getInstance(getApplicationContext());
-            OneTimeWorkRequest sendDataWorkRequest = new OneTimeWorkRequest.Builder(SendUserDataWorker.class)
-                    .setInputData(inputData)
-                    .build();
-            workManager.enqueue(sendDataWorkRequest);
+    private String saveImageToStorage(Bitmap bitmap) {
+        String path = getApplicationContext().getFilesDir().getPath() + "/profile_image.png";
+        File file = new File(path);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+            return path;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
-    private List<String> splitBase64Image(String base64Image, int chunkSize) {
-        List<String> chunks = new ArrayList<>();
-        int offset = 0;
-        while (offset < base64Image.length()) {
-            int length = Math.min(chunkSize, base64Image.length() - offset);
-            String chunk = base64Image.substring(offset, offset + length);
-            chunks.add(chunk);
-            offset += length;
-        }
-        return chunks;
+    private void saveNewUser(String usuario,String nombre, String contrasena, String email, String fotoPath) {
+        Data inputData = new Data.Builder()
+                .putString("usuario", usuario)
+                .putString("nombre", nombre)
+                .putString("contrasena", contrasena)
+                .putString("email", email)
+                .putString("imagenPath", fotoPath)
+                .build();
+
+        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
+        OneTimeWorkRequest sendDataWorkRequest = new OneTimeWorkRequest.Builder(SendUserDataWorker.class)
+                .setInputData(inputData)
+                .build();
+        workManager.enqueue(sendDataWorkRequest);
     }
+
 }

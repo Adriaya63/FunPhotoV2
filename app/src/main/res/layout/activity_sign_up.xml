@@ -24,10 +24,18 @@
         android:hint="Usuario"/>
 
     <EditText
-        android:id="@+id/editTextEmail"
+        android:id="@+id/editTextName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/editTextUsername"
+        android:layout_marginTop="20dp"
+        android:hint="Nombre Completo"/>
+
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextName"
         android:layout_marginTop="20dp"
         android:hint="Email"/>
 
