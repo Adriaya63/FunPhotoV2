@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
         ImageButton imageButtonSearch = findViewById(R.id.imageButton);
         ImageButton imageButtonGallery = findViewById(R.id.imageButton2);
         ImageButton imageButtonUser = findViewById(R.id.imageButton3);
+        Button closeSessionButton = findViewById(R.id.closeSessionButton);
+        Button editButton = findViewById(R.id.editButton);
+
 
         // Asignar OnClickListener a cada botón
         imageButtonSearch.setOnClickListener(new View.OnClickListener() {
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 // Acción cuando se hace clic en el botón de búsqueda
                 Toast.makeText(MainActivity.this, "Botón de búsqueda clickeado", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                intent.putExtra("username", username); // Agregar el nombre de usuario como extra
                 startActivity(intent);
                 finish();
             }
@@ -53,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 // Acción cuando se hace clic en el botón de la galería
                 Toast.makeText(MainActivity.this, "Botón de galería clickeado", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
+                intent.putExtra("username", username); // Agregar el nombre de usuario como extra
                 startActivity(intent);
                 finish();
             }
@@ -64,10 +70,35 @@ public class MainActivity extends AppCompatActivity {
                 // Acción cuando se hace clic en el botón de usuario
                 Toast.makeText(MainActivity.this, "Botón de usuario clickeado", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                intent.putExtra("username", username); // Agregar el nombre de usuario como extra
                 startActivity(intent);
                 finish();
             }
         });
+
+        // Agregar OnClickListener al botón de cerrar sesión
+        closeSessionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Acción cuando se hace clic en el botón de cerrar sesión
+                // Iniciar la actividad LoginActivity
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish(); // Cerrar la actividad actual para evitar que el usuario regrese presionando el botón de retroceso
+            }
+        });
+
+
+        // Agregar OnClickListener al botón de editar
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Acción cuando se hace clic en el botón de editar
+                // Aquí puedes implementar la lógica para editar
+            }
+        });
+
+
     }
 
     private void cargarDatosUsuarios(String username) {
