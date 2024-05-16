@@ -7,24 +7,45 @@
     tools:context=".SearchActivity">
 
     <!-- Barra de búsqueda -->
-    <include
-        layout="@layout/search_bar_layout"
-        android:id="@+id/barrabusqueda"
-        />
 
     <!-- Foto de perfil -->
+
+    <EditText
+        android:id="@+id/editTextSearch"
+        android:layout_width="264dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:hint="Usuario"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:text="Busar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.157"
+        app:layout_constraintStart_toEndOf="@+id/editTextSearch"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Nombre del usuario -->
+
     <ImageView
         android:id="@+id/profileImage"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        app:layout_constraintTop_toBottomOf="@id/barrabusqueda"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        android:visibility="invisible"
+        android:contentDescription="Perfil"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="16dp"
-        android:contentDescription="Perfil"/>
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSearch" />
 
-    <!-- Nombre del usuario -->
     <TextView
         android:id="@+id/profileName"
         android:layout_width="wrap_content"
@@ -35,6 +56,7 @@
         app:layout_constraintTop_toBottomOf="@id/profileImage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"
         android:layout_marginTop="16dp"/>
 
     <!-- Descripción del usuario -->
@@ -46,6 +68,7 @@
         app:layout_constraintTop_toBottomOf="@id/profileName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"
         android:layout_marginTop="8dp"/>
 
     <!-- Botones de seguir -->
@@ -58,6 +81,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnUnfollow"
         android:layout_marginTop="16dp"
+        android:visibility="invisible"
         android:layout_marginEnd="8dp"/>
 
     <!-- Botones de dejar de seguir -->
@@ -70,6 +94,7 @@
         app:layout_constraintStart_toEndOf="@+id/btnFollow"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
+        android:visibility="invisible"
         android:layout_marginStart="8dp"/>
 
     <!-- Lista de fotos -->
@@ -81,6 +106,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
+        android:visibility="invisible"
         android:layout_marginBottom="16dp"/>
 
     <!-- Botones de abajo -->
@@ -117,5 +143,7 @@
         app:layout_constraintStart_toEndOf="@+id/imageButton"
         app:srcCompat="@android:drawable/ic_dialog_info"
         android:contentDescription="User"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
