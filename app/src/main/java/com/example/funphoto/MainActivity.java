@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
                         // Mostrar los datos del usuario en los TextViews
                         TextView nombreUsuarioTextView = findViewById(R.id.profileName);
-                        nombreUsuarioTextView.setText(jsonObject.getString("Nombre"));
+                        nombreUsuarioTextView.setText(jsonObject.getString("Usuario"));
 
                         TextView bioUsuarioTextView = findViewById(R.id.profileDescription);
                         bioUsuarioTextView.setText(jsonObject.getString("Bio"));

@@ -128,6 +128,7 @@ public class SearchActivity extends AppCompatActivity {
                     if (userData.equals("Usuario no encontrado")){
                         String message = "Usuario no encontrado";
                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
                         profileImage.setVisibility(View.INVISIBLE);
                         profileName.setVisibility(View.INVISIBLE);
                         profileDescription.setVisibility(View.INVISIBLE);
@@ -144,6 +145,9 @@ public class SearchActivity extends AppCompatActivity {
                             Log.d("UserData_Main", "Datos del usuario - Nombre: " + jsonObject.getString("Nombre") +
                                     ", Email: " + jsonObject.getString("Email") +
                                     ", Bio: " + jsonObject.getString("Bio"));
+
+                            profileName.setText(jsonObject.getString("Usuario"));
+                            profileDescription.setText(jsonObject.getString("Bio"));
 
                             // Mostrar los datos del usuario en los TextViews
                             profileImage.setVisibility(View.VISIBLE);
