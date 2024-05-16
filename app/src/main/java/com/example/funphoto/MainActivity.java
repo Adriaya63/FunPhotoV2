@@ -27,12 +27,6 @@ public class MainActivity extends AppCompatActivity {
         // Obtener el username del intent
         username = getIntent().getStringExtra("username");
 
-        // Buscar el TextView por su ID
-        TextView nombre_Usuario = findViewById(R.id.profileName);
-
-        // Establecer el texto del TextView como el username
-        nombre_Usuario.setText(username);
-
         // Llamar al método para cargar los datos del usuario
         cargarDatosUsuarios(username);
 
@@ -103,17 +97,24 @@ public class MainActivity extends AppCompatActivity {
                     // Obtener los datos del usuario del resultado
                     String userData = workInfo.getOutputData().getString("userData");
                     Log.d("json222", "Valor de userData: " + userData);
-                    Log.d("MainCargarDatUsu3", "Entra bien en imprimir archivos");
 
                     try {
                         // Convertir la cadena JSON a JSONObject
                         JSONObject jsonObject = new JSONObject(userData);
-                        Log.d("MainCargarDatUsu4", "Entra bien en imprimir archivos");
 
                         // Mostrar los datos del usuario en el log
-                        Log.d("UserData", "Datos del usuario - Nombre: " + jsonObject.getString("Nombre") +
+                        Log.d("UserData_Main", "Datos del usuario - Nombre: " + jsonObject.getString("Nombre") +
                                 ", Email: " + jsonObject.getString("Email") +
                                 ", Bio: " + jsonObject.getString("Bio"));
+
+                        // Mostrar los datos del usuario en los TextViews
+                        TextView nombreUsuarioTextView = findViewById(R.id.profileName);
+                        nombreUsuarioTextView.setText(jsonObject.getString("Nombre"));
+
+                        TextView bioUsuarioTextView = findViewById(R.id.profileDescription);
+                        bioUsuarioTextView.setText(jsonObject.getString("Bio"));
+
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                         Log.e("UserData", "Error al convertir la cadena JSON a JSONObject: " + e.getMessage());
