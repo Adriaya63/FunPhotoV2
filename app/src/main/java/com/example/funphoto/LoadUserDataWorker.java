@@ -1,7 +1,11 @@
 package com.example.funphoto;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.work.Data;
@@ -13,6 +17,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -68,18 +74,41 @@ public class LoadUserDataWorker extends Worker {
 
             // Obtener la respuesta como cadena JSON
             String jsonResponse = responseBuilder.toString();
+            JSONObject jsonObject = new JSONObject(jsonResponse);
+            String image64 = jsonObject.getString("pImage");
+            byte[] decodedBytes = Base64.decode(image64, Base64.DEFAULT);
+            Bitmap imagen = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+            String fotoPath = saveImageToStorage(imagen);
+
+            jsonObject.put("pImage",fotoPath);
+            String userData = jsonObject.toString();
 
             Log.d("UserData", "Cadena JSON recibida: " + jsonResponse);
 
             // Devolver la cadena JSON como resultado
             Data outputData = new Data.Builder()
-                    .putString("userData", jsonResponse)
+                    .putString("userData", userData)
                     .build();
 
             return Result.success(outputData);
         } catch (IOException e) {
             e.printStackTrace();
             return Result.failure();
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private String saveImageToStorage(Bitmap bitmap) {
+        String path = getApplicationContext().getFilesDir().getPath() + "/profile_image.png";
+        File file = new File(path);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+            return path;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

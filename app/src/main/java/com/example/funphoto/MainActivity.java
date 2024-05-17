@@ -6,11 +6,15 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -144,6 +148,9 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
                         TextView bioUsuarioTextView = findViewById(R.id.profileDescription);
                         bioUsuarioTextView.setText(jsonObject.getString("Bio"));
 
+                        Bitmap imagen = BitmapFactory.decodeFile(jsonObject.getString("pImage"));
+                        ImageView imageView = findViewById(R.id.profileImage);
+                        imageView.setImageBitmap(imagen);
 
 
                     } catch (JSONException e) {

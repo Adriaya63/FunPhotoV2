@@ -1,10 +1,16 @@
 package com.example.funphoto;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
 import androidx.annotation.NonNull;
 import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -29,6 +35,12 @@ public class SendUserDataWorker extends Worker {
         String url = "http://34.175.199.167:81/add_user.php";
 
         try {
+            Bitmap bitmap = BitmapFactory.decodeFile(imagenPath);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
             URL serverUrl = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) serverUrl.openConnection();
             connection.setRequestMethod("POST");
@@ -38,7 +50,7 @@ public class SendUserDataWorker extends Worker {
                     "&nombre=" + URLEncoder.encode(nombre, "UTF-8") +
                     "&contrasena=" + URLEncoder.encode(contrasena, "UTF-8") +
                     "&email=" + URLEncoder.encode(email, "UTF-8") +
-                    "&imagenPath=" + URLEncoder.encode(imagenPath, "UTF-8");
+                    "&imagenPath=" + URLEncoder.encode(encodedImage, "UTF-8");
 
             OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
             writer.write(parametros);
