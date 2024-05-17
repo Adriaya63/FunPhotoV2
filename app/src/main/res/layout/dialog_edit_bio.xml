@@ -11,9 +11,4 @@
         android:layout_height="wrap_content"
         android:hint="Editar biografía"/>
 
-    <Button
-        android:id="@+id/buttonSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Guardar"/>
 </LinearLayout>

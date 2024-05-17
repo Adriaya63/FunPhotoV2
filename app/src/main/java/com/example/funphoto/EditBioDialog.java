@@ -26,7 +26,7 @@ public class EditBioDialog extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.dialog_edit_bio, null);
 
         editTextBio = view.findViewById(R.id.editTextBio);
-        buttonSave = view.findViewById(R.id.buttonSave);
+
 
         builder.setView(view)
                 .setTitle("Editar Biografía")

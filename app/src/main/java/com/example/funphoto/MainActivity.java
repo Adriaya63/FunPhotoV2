@@ -69,6 +69,10 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
             public void onClick(View v) {
                 // Acción cuando se hace clic en el botón de usuario
                 Toast.makeText(MainActivity.this, "Botón de usuario clickeado", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                intent.putExtra("username", username); // Agregar el nombre de usuario como extra
+                startActivity(intent);
+                finish();
                 // No es necesario iniciar una nueva actividad aquí, ya estamos en MainActivity
             }
         });
@@ -92,17 +96,74 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
                 // Acción cuando se hace clic en el botón de editar
                 // Mostrar el cuadro de diálogo para editar la biografía
                 openEditBioDialog();
+
             }
         });
     }
 
     private void cargarDatosUsuarios(String username) {
-        // Tu código para cargar los datos del usuario...
+        // Imprimir el nombre de usuario para verificar si funciona
+        Log.d("Usuario_Main", "**************Username: " + username);
+
+        // Crear un objeto Data con los parámetros
+        Data inputData = new Data.Builder()
+                .putString("usuario", username)
+                .build();
+
+        Log.d("MainCargarDatUsu1", "Entra bien en Main");
+
+        // Crear una instancia de WorkManager y programar la tarea para carga   r los datos del usuario
+        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
+        OneTimeWorkRequest cargarDatosUserRequest = new OneTimeWorkRequest.Builder(LoadUserDataWorker.class)
+                .setInputData(inputData)
+                .build();
+        workManager.enqueue(cargarDatosUserRequest);
+
+        // Observar el resultado de la tarea
+        Log.d("MainCargarDatUsu2", "Entra bien en imprimir archivos");
+        workManager.getWorkInfoByIdLiveData(cargarDatosUserRequest.getId()).observe(MainActivity.this, workInfo -> {
+            if (workInfo != null && workInfo.getState().isFinished()) {
+                // La tarea ha finalizado
+                if (workInfo.getState() == androidx.work.WorkInfo.State.SUCCEEDED) {
+                    // Obtener los datos del usuario del resultado
+                    String userData = workInfo.getOutputData().getString("userData");
+                    Log.d("json222", "Valor de userData: " + userData);
+
+                    try {
+                        // Convertir la cadena JSON a JSONObject
+                        JSONObject jsonObject = new JSONObject(userData);
+
+                        // Mostrar los datos del usuario en el log
+                        Log.d("UserData_Main", "Datos del usuario - Nombre: " + jsonObject.getString("Nombre") +
+                                ", Email: " + jsonObject.getString("Email") +
+                                ", Bio: " + jsonObject.getString("Bio"));
+
+                        TextView nombreUsuarioTextView = findViewById(R.id.profileName);
+                        nombreUsuarioTextView.setText(jsonObject.getString("Nombre"));
+
+                        TextView bioUsuarioTextView = findViewById(R.id.profileDescription);
+                        bioUsuarioTextView.setText(jsonObject.getString("Bio"));
+
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("UserData", "Error al convertir la cadena JSON a JSONObject: " + e.getMessage());
+                    }
+
+                } else {
+                    // La tarea falló
+                    String message = "Inicio de sesión fallido. Verifica tus credenciales.";
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void openEditBioDialog() {
         EditBioDialog editBioDialog = new EditBioDialog();
         editBioDialog.show(getSupportFragmentManager(), "edit bio dialog");
+
     }
 
     @Override

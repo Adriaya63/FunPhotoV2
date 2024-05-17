@@ -98,7 +98,6 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void cargarDatosUsuarios(String username) {
-        boolean rdo = false;
         // Imprimir el nombre de usuario para verificar si funciona
         Log.d("Usuario_Main", "**************Username: " + username);
 
