@@ -152,6 +152,10 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
                         ImageView imageView = findViewById(R.id.profileImage);
                         imageView.setImageBitmap(imagen);
 
+                        // Aplicar la forma circular a la imagen
+                        Bitmap circularBitmap = ImageHelper.getCircularBitmap(imagen);
+                        imageView.setImageBitmap(circularBitmap);
+
 
                     } catch (JSONException e) {
                         e.printStackTrace();

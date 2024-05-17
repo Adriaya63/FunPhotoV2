@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/secondaryLightColor"
     tools:context=".MainActivity">
 
     <!-- Foto de perfil -->
@@ -11,58 +13,61 @@
         android:id="@+id/profileImage"
         android:layout_width="150dp"
         android:layout_height="150dp"
+        android:contentDescription="Perfil"
+        android:background="@drawable/profile_image_background"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/profileName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:contentDescription="Perfil"/>
+        app:layout_constraintHorizontal_bias="0.5" />
 
     <!-- Nombre del usuario -->
     <TextView
         android:id="@+id/profileName"
+        style="@style/ProfileNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nombre de Usuario (Aqui va tu usuario propio)"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:text="Nombre de Usuario (Aquí va tu usuario propio)"
         app:layout_constraintTop_toBottomOf="@id/profileImage"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Descripción del usuario -->
     <TextView
         android:id="@+id/profileDescription"
+        style="@style/ProfileDescriptionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="Descripción del usuario..."
         app:layout_constraintTop_toBottomOf="@id/profileName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Lista de fotos -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/photosRecyclerView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintTop_toBottomOf="@id/profileDescription"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Botones de acción (Imagen) -->
     <ImageButton
         android:id="@+id/imageButton"
         android:layout_width="90dp"
         android:layout_height="85dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="Buscar"
+        android:tint="@color/buttonColor"
         app:srcCompat="@android:drawable/ic_menu_search"
-        android:contentDescription="Buscar"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/imageButton2"
@@ -70,51 +75,91 @@
         android:layout_height="79dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="Gallery"
+        android:tint="@color/buttonColor"
         app:srcCompat="@android:drawable/ic_menu_camera"
-        android:contentDescription="Gallery"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageButton
         android:id="@+id/imageButton3"
         android:layout_width="82dp"
         android:layout_height="83dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
-        app:layout_constraintHorizontal_bias="0.554"
-        app:layout_constraintStart_toEndOf="@+id/imageButton"
+        android:contentDescription="User"
+        android:tint="@color/buttonColor"
         app:srcCompat="@android:drawable/ic_dialog_info"
-        android:contentDescription="User"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imageButton"
+        app:layout_constraintEnd_toStartOf="@id/imageButton2"
+        app:layout_constraintHorizontal_bias="0.554" />
 
     <!-- Botones de acción -->
     <LinearLayout
         android:id="@+id/actionButtonsLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="@id/profileImage"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="16dp">
-
-
-        <!-- Botón de cerrar sesión -->
-        <Button
-            android:id="@+id/closeSessionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cerrar Sesión"
-            android:textSize="12sp"
-            android:padding="8dp"/>
+        app:layout_constraintStart_toEndOf="@+id/profileImage"
+        app:layout_constraintTop_toTopOf="@id/profileImage">
 
         <!-- Botón de editar -->
         <Button
             android:id="@+id/editButton"
+            style="@style/ActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Editar"
-            android:textSize="12sp"
-            android:padding="8dp"/>
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
     </LinearLayout>
+
+    <!-- Botones de acción -->
+    <LinearLayout
+        android:id="@+id/actionButtonsLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/profileImage"
+        app:layout_constraintEnd_toStartOf="@id/profileImage"
+        app:layout_constraintStart_toStartOf="parent">
+
+    <!-- Botón de Subir foto -->
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/Subir_foto"
+        style="@style/ActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="60dp"
+        android:text="Subir foto"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/profileImage"
+        app:layout_constraintHorizontal_bias="0.176"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/closeSessionButton"
+        style="@style/ActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="12dp"
+        android:text="Cerrar Sesión"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/actionButtonsLayout" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
