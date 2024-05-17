@@ -6,10 +6,11 @@
     <color name="primaryLightColor">#BB86FC</color>
     <color name="primaryDarkColor">#3700B3</color>
     <color name="secondaryColor">#03DAC5</color>
-    <color name="secondaryLightColor">#CFD8DC</color>
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="textColorSecondary">#000000</color>
 
+    <color name="colorCirculo">#CACACA</color>
+    <color name="secondaryLightColor">#FFFFFF</color>
     <color name="buttonColor">#7B9DF3</color>
     <color name="backgroundColor">#FFFFFF</color>
     <color name="textColor">#000000</color>

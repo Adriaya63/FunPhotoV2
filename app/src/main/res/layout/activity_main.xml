@@ -65,6 +65,7 @@
         android:layout_marginBottom="8dp"
         android:contentDescription="Buscar"
         android:tint="@color/buttonColor"
+        android:background="@android:color/white"
         app:srcCompat="@android:drawable/ic_menu_search"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -77,6 +78,7 @@
         android:layout_marginBottom="8dp"
         android:contentDescription="Gallery"
         android:tint="@color/buttonColor"
+        android:background="@android:color/white"
         app:srcCompat="@android:drawable/ic_menu_camera"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -88,6 +90,7 @@
         android:layout_marginBottom="8dp"
         android:contentDescription="User"
         android:tint="@color/buttonColor"
+        android:background="@android:color/white"
         app:srcCompat="@android:drawable/ic_dialog_info"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/imageButton"
@@ -129,7 +132,7 @@
         app:layout_constraintEnd_toStartOf="@id/profileImage"
         app:layout_constraintStart_toStartOf="parent">
 
-    <!-- Botón de Subir foto -->
+        <!-- Botón de Subir foto -->
 
     </LinearLayout>
 
@@ -161,5 +164,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/actionButtonsLayout" />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+

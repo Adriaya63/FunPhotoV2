@@ -30,11 +30,16 @@ public class SearchActivity extends AppCompatActivity {
     private Button btnFollow;
     private Button btnUnfollow;
     private RecyclerView photosRecyclerView;
+    String username = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        // Obtener el username del intent
+        username = getIntent().getStringExtra("username");
 
         // Buscar los ImageButtons por su ID
         ImageButton imageButtonSearch = findViewById(R.id.imageButton);
@@ -69,6 +74,7 @@ public class SearchActivity extends AppCompatActivity {
                 // Acción cuando se hace clic en el botón de búsqueda
                 Toast.makeText(SearchActivity.this, "Botón de búsqueda clickeado", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(SearchActivity.this, SearchActivity.class);
+                intent.putExtra("username", username); // Agregar el nombre de usuario como extra
                 startActivity(intent);
                 finish();
             }
@@ -80,6 +86,7 @@ public class SearchActivity extends AppCompatActivity {
                 // Acción cuando se hace clic en el botón de la galería
                 Toast.makeText(SearchActivity.this, "Botón de galería clickeado", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(SearchActivity.this, GalleryActivity.class);
+                intent.putExtra("username", username); // Agregar el nombre de usuario como extra
                 startActivity(intent);
                 finish();
             }
@@ -91,6 +98,7 @@ public class SearchActivity extends AppCompatActivity {
                 // Acción cuando se hace clic en el botón de usuario
                 Toast.makeText(SearchActivity.this, "Botón de usuario clickeado", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(SearchActivity.this, MainActivity.class);
+                intent.putExtra("username", username); // Agregar el nombre de usuario como extra
                 startActivity(intent);
                 finish();
             }

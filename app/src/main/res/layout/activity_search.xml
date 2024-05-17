@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchActivity">
+    tools:context=".SearchActivity"
+    android:background="@color/secondaryLightColor">
 
     <!-- Barra de búsqueda -->
-
-    <!-- Foto de perfil -->
-
     <EditText
         android:id="@+id/editTextSearch"
         android:layout_width="264dp"
@@ -22,18 +21,20 @@
 
     <Button
         android:id="@+id/buttonSearch"
+        style="@style/ActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
-        android:text="Busar"
+        android:text="Buscar"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.157"
         app:layout_constraintStart_toEndOf="@+id/editTextSearch"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Nombre del usuario -->
-
+    <!-- Foto de perfil -->
     <ImageView
         android:id="@+id/profileImage"
         android:layout_width="150dp"
@@ -46,68 +47,75 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextSearch" />
 
+    <!-- Nombre del usuario -->
     <TextView
         android:id="@+id/profileName"
+        style="@style/ProfileNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nombre de Usuario"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:visibility="invisible"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/profileImage"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="invisible"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Descripción del usuario -->
     <TextView
         android:id="@+id/profileDescription"
+        style="@style/ProfileDescriptionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Descripción del usuario (Aqui van las busquedas de los perfiles)"
+        android:text="Descripción del usuario (Aquí van las búsquedas de los perfiles)"
+        android:visibility="invisible"
+        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@id/profileName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="invisible"
-        android:layout_marginTop="8dp"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Botones de seguir -->
     <Button
         android:id="@+id/btnFollow"
+        style="@style/ActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Seguir"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintTop_toBottomOf="@id/profileDescription"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnUnfollow"
-        android:layout_marginTop="16dp"
-        android:visibility="invisible"
-        android:layout_marginEnd="8dp"/>
+        app:layout_constraintEnd_toStartOf="@+id/btnUnfollow" />
 
     <!-- Botones de dejar de seguir -->
     <Button
         android:id="@+id/btnUnfollow"
+        style="@style/ActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dejar de seguir"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintTop_toBottomOf="@id/profileDescription"
         app:layout_constraintStart_toEndOf="@+id/btnFollow"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:visibility="invisible"
-        android:layout_marginStart="8dp"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Lista de fotos -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/photosRecyclerView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintTop_toBottomOf="@id/btnUnfollow"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:visibility="invisible"
-        android:layout_marginBottom="16dp"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Botones de abajo -->
     <ImageButton
@@ -116,10 +124,12 @@
         android:layout_height="85dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="8dp"
+        android:background="@android:color/white"
+        android:tint="@color/buttonColor"
+        android:contentDescription="Buscar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_search"
-        android:contentDescription="Buscar"/>
+        app:srcCompat="@android:drawable/ic_menu_search" />
 
     <ImageButton
         android:id="@+id/imageButton2"
@@ -127,23 +137,25 @@
         android:layout_height="79dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
+        android:background="@android:color/white"
+        android:tint="@color/buttonColor"
+        android:contentDescription="Gallery"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_camera"
-        android:contentDescription="Gallery"/>
+        app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <ImageButton
         android:id="@+id/imageButton3"
         android:layout_width="82dp"
         android:layout_height="83dp"
         android:layout_marginBottom="8dp"
+        android:background="@android:color/white"
+        android:tint="@color/buttonColor"
+        android:contentDescription="User"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageButton2"
         app:layout_constraintHorizontal_bias="0.554"
         app:layout_constraintStart_toEndOf="@+id/imageButton"
-        app:srcCompat="@android:drawable/ic_dialog_info"
-        android:contentDescription="User"/>
-
-
+        app:srcCompat="@android:drawable/ic_dialog_info" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

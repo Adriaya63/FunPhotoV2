@@ -7,8 +7,8 @@
 
     <EditText
         android:id="@+id/editTextBio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Editar biografía"/>
+        style="@style/EditTextStyle"
+        android:hint="Editar biografía" />
+
 
 </LinearLayout>
