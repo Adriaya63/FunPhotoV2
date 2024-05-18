@@ -7,6 +7,8 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -155,6 +157,9 @@ public class SearchActivity extends AppCompatActivity {
 
                             profileName.setText(jsonObject.getString("Usuario"));
                             profileDescription.setText(jsonObject.getString("Bio"));
+
+                            Bitmap imagen = BitmapFactory.decodeFile(jsonObject.getString("pImage"));
+                            profileImage.setImageBitmap(imagen);
 
                             // Mostrar los datos del usuario en los TextViews
                             profileImage.setVisibility(View.VISIBLE);
