@@ -161,6 +161,9 @@ public class SearchActivity extends AppCompatActivity {
                             Bitmap imagen = BitmapFactory.decodeFile(jsonObject.getString("pImage"));
                             profileImage.setImageBitmap(imagen);
 
+                            Bitmap circularBitmap = ImageHelper.getCircularBitmap(imagen);
+                            profileImage.setImageBitmap(circularBitmap);
+
                             // Mostrar los datos del usuario en los TextViews
                             profileImage.setVisibility(View.VISIBLE);
                             profileName.setVisibility(View.VISIBLE);
