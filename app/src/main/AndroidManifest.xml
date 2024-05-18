@@ -24,6 +24,7 @@
         <activity android:name=".SignUpActivity"/>
         <activity android:name=".SearchActivity"/>
         <activity android:name=".GalleryActivity"/>
+        <activity android:name=".UploadFotoActivity"/>
         <activity
             android:name=".LoginActivity"
             android:exported="true">

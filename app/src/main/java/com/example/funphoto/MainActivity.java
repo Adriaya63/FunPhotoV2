@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
         ImageButton imageButtonUser = findViewById(R.id.imageButton3);
         Button closeSessionButton = findViewById(R.id.closeSessionButton);
         Button editButton = findViewById(R.id.editButton);
+        Button updateFoto = findViewById(R.id.Subir_foto);
 
 
         // Asignar OnClickListener a cada botón
@@ -90,6 +91,16 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish(); // Cerrar la actividad actual para evitar que el usuario regrese presionando el botón de retroceso
+            }
+        });
+
+        updateFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, UploadFotoActivity.class);
+                intent.putExtra("username", username); // Agregar el nombre de usuario como extra
+                startActivity(intent);
+                finish();
             }
         });
 
