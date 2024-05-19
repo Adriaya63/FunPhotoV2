@@ -38,6 +38,7 @@ public class SearchActivity extends AppCompatActivity {
     private Button btnUnfollow;
     private RecyclerView photosRecyclerView;
     String username = "";
+    String follows = "";
     String searchText = "";
 
     private PubliAdapter taskAdapter;
@@ -51,6 +52,7 @@ public class SearchActivity extends AppCompatActivity {
 
         // Obtener el username del intent
         username = getIntent().getStringExtra("username");
+        follows = getIntent().getStringExtra("follows");
 
         // Buscar los ImageButtons por su ID
         ImageButton imageButtonSearch = findViewById(R.id.imageButton);
@@ -85,7 +87,7 @@ public class SearchActivity extends AppCompatActivity {
         btnFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                insertarFollow(username,searchText);
+                insertarFollow(searchText,username);
                 Toast.makeText(SearchActivity.this, "Has seguido a "+searchText, Toast.LENGTH_SHORT).show();
 
             }
@@ -94,7 +96,7 @@ public class SearchActivity extends AppCompatActivity {
         btnUnfollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                eliminarFollow(username,searchText);
+                eliminarFollow(searchText,username);
                 Toast.makeText(SearchActivity.this, "Has dejado de seguir a "+searchText, Toast.LENGTH_SHORT).show();
 
             }
@@ -108,6 +110,7 @@ public class SearchActivity extends AppCompatActivity {
                 Toast.makeText(SearchActivity.this, "Botón de búsqueda clickeado", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(SearchActivity.this, SearchActivity.class);
                 intent.putExtra("username", username); // Agregar el nombre de usuario como extra
+                intent.putExtra("follows", follows);
                 startActivity(intent);
                 finish();
             }
@@ -120,6 +123,7 @@ public class SearchActivity extends AppCompatActivity {
                 Toast.makeText(SearchActivity.this, "Botón de galería clickeado", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(SearchActivity.this, GalleryActivity.class);
                 intent.putExtra("username", username); // Agregar el nombre de usuario como extra
+                intent.putExtra("follows", follows);
                 startActivity(intent);
                 finish();
             }
@@ -132,6 +136,7 @@ public class SearchActivity extends AppCompatActivity {
                 Toast.makeText(SearchActivity.this, "Botón de usuario clickeado", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(SearchActivity.this, MainActivity.class);
                 intent.putExtra("username", username); // Agregar el nombre de usuario como extra
+                intent.putExtra("follows", follows);
                 startActivity(intent);
                 finish();
             }
@@ -200,7 +205,19 @@ public class SearchActivity extends AppCompatActivity {
                             profileName.setVisibility(View.VISIBLE);
                             profileDescription.setVisibility(View.VISIBLE);
                             btnFollow.setVisibility(View.VISIBLE);
-                            btnUnfollow.setVisibility(View.VISIBLE);
+                            Log.d("Pruebas",follows);
+                            Log.d("Pruebas1",searchText);
+                            Log.d("Pruebas2",username);
+                            if(searchText.equals(username)){
+                                btnFollow.setVisibility(View.INVISIBLE);
+                                btnUnfollow.setVisibility(View.INVISIBLE);
+                            }else if (buscarUser(follows,searchText)){
+                                btnFollow.setVisibility(View.INVISIBLE);
+                                btnUnfollow.setVisibility(View.VISIBLE);
+                            }else{
+                                btnFollow.setVisibility(View.VISIBLE);
+                                btnUnfollow.setVisibility(View.INVISIBLE);
+                            }
                             photosRecyclerView.setVisibility(View.VISIBLE);
 
                         } catch (JSONException e) {
@@ -302,4 +319,28 @@ public class SearchActivity extends AppCompatActivity {
                 .build();
         workManager.enqueue(sendDataWorkRequest);
     }
+    private boolean buscarUser(String follows, String name) {
+        boolean sigue = false;
+
+        try {
+            // Convertir la cadena follows en un JSONArray
+            JSONArray followsArray = new JSONArray(follows);
+
+            // Iterar sobre los elementos del JSONArray
+            for (int i = 0; i < followsArray.length(); i++) {
+                // Obtener el objeto JSON en la posición i
+                JSONObject jsonObject = followsArray.getJSONObject(i);
+                if(jsonObject.getString("seguido").equals(searchText)){
+                    sigue = true;
+                }
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            // Manejar la excepción si ocurre algún error al procesar el JSON
+        }
+
+        return sigue;
+    }
+
 }

@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,12 +25,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MainActivity extends AppCompatActivity implements EditBioDialog.EditBioDialogListener {
     private RecyclerView recyclerViewTasks;
     private PubliAdapter taskAdapter;
     private List<Publicacion> pubList;
     String username = "";
+    String follows = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
         // Llamar al método para cargar los datos del usuario
         cargarDatosUsuarios(username);
         pubList = cargarFotosUsuario(username);
+        cargarFollows(username);
 
         // Buscar los ImageButtons por su ID
         ImageButton imageButtonSearch = findViewById(R.id.imageButton);
@@ -67,7 +69,8 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
                 // Acción cuando se hace clic en el botón de búsqueda
                 Toast.makeText(MainActivity.this, "Botón de búsqueda clickeado", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                intent.putExtra("username", username); // Agregar el nombre de usuario como extra
+                intent.putExtra("username", username);// Agregar el nombre de usuario como extra
+                intent.putExtra("follows", follows);
                 startActivity(intent);
                 finish();
             }
@@ -90,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
                 Toast.makeText(MainActivity.this, "Botón de galería clickeado", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
                 intent.putExtra("username", username); // Agregar el nombre de usuario como extra
+                intent.putExtra("follows", follows);
                 startActivity(intent);
                 finish();
             }
@@ -102,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
                 Toast.makeText(MainActivity.this, "Botón de usuario clickeado", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, MainActivity.class);
                 intent.putExtra("username", username); // Agregar el nombre de usuario como extra
+                intent.putExtra("follows", follows);
                 startActivity(intent);
                 finish();
                 // No es necesario iniciar una nueva actividad aquí, ya estamos en MainActivity
@@ -125,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, UploadFotoActivity.class);
                 intent.putExtra("username", username); // Agregar el nombre de usuario como extra
+                intent.putExtra("follows", follows);
                 startActivity(intent);
                 finish();
             }
@@ -199,6 +205,43 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
                         Log.e("UserData", "Error al convertir la cadena JSON a JSONObject: " + e.getMessage());
                     }
 
+                } else {
+                    // La tarea falló
+                    String message = "Inicio de sesión fallido. Verifica tus credenciales.";
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+    private void cargarFollows(String username) {
+        // Imprimir el nombre de usuario para verificar si funciona
+        Log.d("Usuario_Main", "**************Username: " + username);
+
+        // Crear un objeto Data con los parámetros
+        Data inputData = new Data.Builder()
+                .putString("usuario", username)
+                .build();
+
+        Log.d("MainCargarDatUsu1", "Entra bien en Main");
+
+        // Crear una instancia de WorkManager y programar la tarea para carga   r los datos del usuario
+        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
+        OneTimeWorkRequest cargarDatosUserRequest = new OneTimeWorkRequest.Builder(GetFollowsWorker.class)
+                .setInputData(inputData)
+                .build();
+        workManager.enqueue(cargarDatosUserRequest);
+
+        // Observar el resultado de la tarea
+        Log.d("MainCargarDatUsu2", "Entra bien en imprimir archivos");
+        workManager.getWorkInfoByIdLiveData(cargarDatosUserRequest.getId()).observe(MainActivity.this, workInfo -> {
+            if (workInfo != null && workInfo.getState().isFinished()) {
+                // La tarea ha finalizado
+                if (workInfo.getState() == androidx.work.WorkInfo.State.SUCCEEDED) {
+                    // Obtener los datos del usuario del resultado
+                    String userData = workInfo.getOutputData().getString("userData");
+                    Log.d("json222", "Valor de userData: " + userData);
+                    follows = userData;
+                    Log.d("data",follows);
                 } else {
                     // La tarea falló
                     String message = "Inicio de sesión fallido. Verifica tus credenciales.";

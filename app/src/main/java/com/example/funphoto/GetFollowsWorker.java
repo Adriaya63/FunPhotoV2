@@ -73,17 +73,8 @@ public class GetFollowsWorker extends Worker {
             reader.close();
 
             // Obtener la respuesta como cadena JSON
-            String jsonResponse = responseBuilder.toString();
-            JSONObject jsonObject = new JSONObject(jsonResponse);
-            String image64 = jsonObject.getString("pImage");
-            byte[] decodedBytes = Base64.decode(image64, Base64.DEFAULT);
-            Bitmap imagen = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-            String fotoPath = saveImageToStorage(imagen);
-
-            jsonObject.put("pImage",fotoPath);
-            String userData = jsonObject.toString();
-
-            Log.d("UserData", "Cadena JSON recibida: " + jsonResponse);
+            String userData = responseBuilder.toString();
+            Log.d("UserData", "Cadena JSON recibida: " + userData);
 
             // Devolver la cadena JSON como resultado
             Data outputData = new Data.Builder()
@@ -94,21 +85,6 @@ public class GetFollowsWorker extends Worker {
         } catch (IOException e) {
             e.printStackTrace();
             return Result.failure();
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    private String saveImageToStorage(Bitmap bitmap) {
-        String path = getApplicationContext().getFilesDir().getPath() + "/profile_image.png";
-        File file = new File(path);
-        try {
-            FileOutputStream fos = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-            fos.close();
-            return path;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
         }
     }
 }
