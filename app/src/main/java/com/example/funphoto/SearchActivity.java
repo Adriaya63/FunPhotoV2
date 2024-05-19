@@ -38,6 +38,7 @@ public class SearchActivity extends AppCompatActivity {
     private Button btnUnfollow;
     private RecyclerView photosRecyclerView;
     String username = "";
+    String searchText = "";
 
     private PubliAdapter taskAdapter;
     private List<Publicacion> pubList;
@@ -72,11 +73,29 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Mostrar todos los elementos del XML
-                String searchText = editTextSeach.getText().toString();
+                searchText = editTextSeach.getText().toString();
                 cargarDatosUsuarios(searchText);
                 pubList = cargarFotosUsuario(searchText);
                 taskAdapter = new PubliAdapter(pubList);
                 photosRecyclerView.setAdapter(taskAdapter);
+
+            }
+        });
+
+        btnFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                insertarFollow(username,searchText);
+                Toast.makeText(SearchActivity.this, "Has seguido a "+searchText, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        btnUnfollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eliminarFollow(username,searchText);
+                Toast.makeText(SearchActivity.this, "Has dejado de seguir a "+searchText, Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -257,5 +276,30 @@ public class SearchActivity extends AppCompatActivity {
 
         });
         return publicaciones;
+    }
+
+    private void insertarFollow(String seguido,String seguidor) {
+        Data inputData = new Data.Builder()
+                .putString("seguido", seguido)
+                .putString("seguidor", seguidor)
+                .build();
+
+        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
+        OneTimeWorkRequest sendDataWorkRequest = new OneTimeWorkRequest.Builder(InsertFollowWorker.class)
+                .setInputData(inputData)
+                .build();
+        workManager.enqueue(sendDataWorkRequest);
+    }
+    private void eliminarFollow(String seguido,String seguidor) {
+        Data inputData = new Data.Builder()
+                .putString("seguido", seguido)
+                .putString("seguidor", seguidor)
+                .build();
+
+        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
+        OneTimeWorkRequest sendDataWorkRequest = new OneTimeWorkRequest.Builder(DeleteFollowWorker.class)
+                .setInputData(inputData)
+                .build();
+        workManager.enqueue(sendDataWorkRequest);
     }
 }

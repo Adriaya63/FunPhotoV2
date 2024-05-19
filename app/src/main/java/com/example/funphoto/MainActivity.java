@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
         Button closeSessionButton = findViewById(R.id.closeSessionButton);
         Button editButton = findViewById(R.id.editButton);
         Button updateFoto = findViewById(R.id.Subir_foto);
+        Button deleteUser = findViewById(R.id.eliminar_cuenta);
 
         recyclerViewTasks = findViewById(R.id.photosRecyclerView);
         recyclerViewTasks.setLayoutManager(new LinearLayoutManager(this));
@@ -67,6 +68,16 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
                 Toast.makeText(MainActivity.this, "Botón de búsqueda clickeado", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 intent.putExtra("username", username); // Agregar el nombre de usuario como extra
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        deleteUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteUser(username);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -286,5 +297,16 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
         workManager.enqueue(editUserDataRequest);
 
         // Observar el resultado de la tarea, si es necesario
+    }
+    private void deleteUser(String usuario) {
+        Data inputData = new Data.Builder()
+                .putString("usuario", usuario)
+                .build();
+
+        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
+        OneTimeWorkRequest sendDataWorkRequest = new OneTimeWorkRequest.Builder(DeleteUserWorker.class)
+                .setInputData(inputData)
+                .build();
+        workManager.enqueue(sendDataWorkRequest);
     }
 }
