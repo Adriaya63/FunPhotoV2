@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="84dp"
         android:layout_marginTop="116dp"
-        android:text="Camara"
+        android:text="@string/btn_camara"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
         android:layout_marginBottom="68dp"
-        android:text="Cancelar"
+        android:text="@string/btn_cancelar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="56dp"
         android:layout_marginBottom="68dp"
-        android:text="Subir Foto"
+        android:text="@string/btn_subir_foto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -68,7 +68,7 @@
         android:layout_height="62dp"
         android:layout_marginStart="76dp"
         android:layout_marginTop="508dp"
-        android:hint="Usuario"
+        android:hint="@string/btn_usuario"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="116dp"
         android:layout_marginEnd="80dp"
-        android:text="Galeria"
+        android:text="@string/btn_galeria"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

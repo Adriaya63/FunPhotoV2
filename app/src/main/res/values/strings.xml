@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">FunPhoto</string>
+    <string name="btn_español">Español</string>
+    <string name="btn_ingles">Ingles</string>
+    <string name="btn_euskera">Euskera</string>
+    <string name="btn_login">Iniciar sesion</string>
+    <string name="btn_registro">Registrarse</string>
+    <string name="btn_buscar">Buscar</string>
+    <string name="btn_camara">Camara</string>
+    <string name="btn_galeria">Galeria</string>
+    <string name="btn_cancelar">Cancelar</string>
+    <string name="btn_subir_foto">Subir Foto</string>
+    <string name="btn_usuario">Usuario</string>
+    <string name="btn_Contraseña">Contraseña</string>
 </resources>

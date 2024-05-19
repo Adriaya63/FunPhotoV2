@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FunPhoto</string>
+    <string name="btn_español">Gaztelania</string>
+    <string name="btn_ingles">Ingelesa</string>
+    <string name="btn_euskera">Euskara</string>
+    <string name="btn_login">" Saioa hasi"</string>
+    <string name="btn_registro">Erregistratu</string>
+    <string name="btn_buscar">"Bilatu "</string>
+    <string name="btn_camara">Kamera</string>
+    <string name="btn_galeria">Galeria</string>
+    <string name="btn_cancelar">Utzi</string>
+    <string name="btn_subir_foto">" Kargatu argazkia"</string>
+    <string name="btn_usuario">"Erabiltzailea "</string>
+    <string name="btn_Contraseña">Pasahitza</string>
+</resources>
