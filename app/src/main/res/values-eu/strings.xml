@@ -9,8 +9,15 @@
     <string name="btn_buscar">"Bilatu "</string>
     <string name="btn_camara">Kamera</string>
     <string name="btn_galeria">Galeria</string>
+    <string name="btn_hacerfotoperfil">"Profileko argazkia egitea "</string>
     <string name="btn_cancelar">Utzi</string>
     <string name="btn_subir_foto">" Kargatu argazkia"</string>
     <string name="btn_usuario">"Erabiltzailea "</string>
     <string name="btn_Contraseña">Pasahitza</string>
+    <string name="btn_cerrarsesion">Saioa Itxi</string>
+    <string name="btn_editar">Editatu</string>
+    <string name="titulo_gallery">Azken Argitalpenak</string>
+    <string name="titulo_registrarse">Erregistratu</string>
+    <string name="btn_nombrecompleto">Izen Osoa</string>
+    <string name="btn_email">Email</string>
 </resources>

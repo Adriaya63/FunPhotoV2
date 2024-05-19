@@ -12,4 +12,11 @@
     <string name="btn_subir_foto">Subir Foto</string>
     <string name="btn_usuario">Usuario</string>
     <string name="btn_Contraseña">Contraseña</string>
+    <string name="btn_cerrarsesion">Cerrar Sesión</string>
+    <string name="btn_editar">Editar</string>
+    <string name="titulo_gallery">Últimas publicaciones</string>
+    <string name="titulo_registrarse">Registrarse</string>
+    <string name="btn_nombrecompleto">Nombre Completo</string>
+    <string name="btn_email">Email</string>
+    <string name="btn_hacerfotoperfil">Hacer foto de perfil</string>
 </resources>

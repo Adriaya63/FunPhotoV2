@@ -15,7 +15,7 @@
         android:layout_height="54dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
-        android:hint="Usuario"
+        android:hint="@string/btn_usuario"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

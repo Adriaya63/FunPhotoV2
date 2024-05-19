@@ -9,8 +9,16 @@
     <string name="btn_buscar">Search</string>
     <string name="btn_camara">Camera</string>
     <string name="btn_galeria">Galery</string>
+    <string name="btn_hacerfotoperfil">Make Profile Picture</string>
     <string name="btn_cancelar">Cancel</string>
     <string name="btn_subir_foto">" Upload photo"</string>
     <string name="btn_usuario">User</string>
     <string name="btn_Contraseña">Password</string>
+    <string name="btn_cerrarsesion">Log Out</string>
+    <string name="btn_editar">Edit</string>
+    <string name="titulo_gallery">Latests Posts</string>
+    <string name="titulo_registrarse">Sign up</string>
+    <string name="btn_nombrecompleto">Full name</string>
+    <string name="btn_email">Email</string>
+
 </resources>

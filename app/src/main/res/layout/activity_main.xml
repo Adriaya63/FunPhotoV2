@@ -114,7 +114,7 @@
             style="@style/ActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Editar"
+            android:text="@string/btn_editar"
             android:textSize="18sp"
             android:textStyle="bold"/>
 
@@ -143,7 +143,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="60dp"
-        android:text="Subir foto"
+        android:text="@string/btn_subir_foto"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/profileImage"
@@ -158,7 +158,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="52dp"
         android:layout_marginEnd="12dp"
-        android:text="Cerrar Sesión"
+        android:text="@string/btn_cerrarsesion"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
