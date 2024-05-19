@@ -44,7 +44,6 @@ public class SearchActivity extends AppCompatActivity {
     private PubliAdapter taskAdapter;
     private List<Publicacion> pubList;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

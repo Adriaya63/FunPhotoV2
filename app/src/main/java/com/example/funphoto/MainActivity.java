@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
                 if (workInfo.getState() == androidx.work.WorkInfo.State.SUCCEEDED) {
                     // Obtener los datos del usuario del resultado
                     String userData = workInfo.getOutputData().getString("userData");
-                    Log.d("json222", "Valor de userData: " + userData);
+                    Log.d("json2222", "Valor de userData: " + userData);
                     follows = userData;
                     Log.d("data",follows);
                 } else {
