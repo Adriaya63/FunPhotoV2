@@ -1,6 +1,7 @@
 package com.example.funphoto;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
@@ -19,8 +20,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -33,6 +38,9 @@ public class SearchActivity extends AppCompatActivity {
     private Button btnUnfollow;
     private RecyclerView photosRecyclerView;
     String username = "";
+
+    private PubliAdapter taskAdapter;
+    private List<Publicacion> pubList;
 
 
     @Override
@@ -55,9 +63,10 @@ public class SearchActivity extends AppCompatActivity {
         profileDescription = findViewById(R.id.profileDescription);
         btnFollow = findViewById(R.id.btnFollow);
         btnUnfollow = findViewById(R.id.btnUnfollow);
-        photosRecyclerView = findViewById(R.id.photosRecyclerView);
 
-        // Configurar el OnClickListener del include
+        photosRecyclerView = findViewById(R.id.photosRecyclerView);
+        photosRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
 
         buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +74,9 @@ public class SearchActivity extends AppCompatActivity {
                 // Mostrar todos los elementos del XML
                 String searchText = editTextSeach.getText().toString();
                 cargarDatosUsuarios(searchText);
+                pubList = cargarFotosUsuario(searchText);
+                taskAdapter = new PubliAdapter(pubList);
+                photosRecyclerView.setAdapter(taskAdapter);
 
             }
         });
@@ -184,5 +196,66 @@ public class SearchActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private List<Publicacion> cargarFotosUsuario(String username) {
+        // Crear un objeto Data con los parámetros
+        List<Publicacion> publicaciones = new ArrayList<>();
+        Data inputData = new Data.Builder()
+                .putString("usuario", username)
+                .build();
+
+        // Crear una instancia de WorkManager y programar la tarea para cargar las fotos del usuario
+        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
+        OneTimeWorkRequest cargarFotosUsuarioRequest = new OneTimeWorkRequest.Builder(GetUserImagesWorker.class)
+                .setInputData(inputData)
+                .build();
+        workManager.enqueue(cargarFotosUsuarioRequest);
+
+        // Observar el resultado de la tarea
+        workManager.getWorkInfoByIdLiveData(cargarFotosUsuarioRequest.getId()).observe(SearchActivity.this, workInfo -> {
+            if (workInfo != null && workInfo.getState().isFinished()) {
+                // La tarea ha finalizado
+                if (workInfo.getState() == androidx.work.WorkInfo.State.SUCCEEDED) {
+                    // Obtener las fotos del usuario del resultado
+                    String userPhotos = workInfo.getOutputData().getString("userData");
+                    Log.d("FotosUsuario", "Fotos del usuario: " + userPhotos);
+
+                    try {
+                        // Convertir la cadena JSON a JSONArray
+                        JSONArray jsonArray = new JSONArray(userPhotos);
+
+                        // Limpiar la lista de publicaciones antes de agregar nuevas imágenes
+                        publicaciones.clear();
+
+                        // Recorrer el JSONArray y crear objetos Imagen para cada elemento JSON
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonImage = jsonArray.getJSONObject(i);
+                            Log.d("Json",jsonImage.toString());
+                            String user = jsonImage.getString("usuario");
+                            String fotoPath = jsonImage.getString("foto");
+                            String pieFoto = jsonImage.getString("pie");
+
+                            // Crear un nuevo objeto Imagen y agregarlo a la lista pubList
+                            Publicacion imagen = new Publicacion(user,fotoPath, pieFoto);
+                            publicaciones.add(imagen);
+                        }
+
+                        // Notificar al adaptador que los datos han cambiado
+                        taskAdapter.notifyDataSetChanged();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("FotosUsuario", "Error al procesar el JSON: " + e.getMessage());
+                    }
+
+                } else {
+                    // La tarea falló
+                    Log.e("FotosUsuario", "Error al cargar las fotos del usuario.");
+                }
+            }
+
+        });
+        return publicaciones;
     }
 }
