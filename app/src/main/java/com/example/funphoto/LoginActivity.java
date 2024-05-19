@@ -135,8 +135,10 @@ public class LoginActivity extends AppCompatActivity {
                             // Redirigir a MainActivity
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("username", username); // Aquí se añade el parámetro username al intent
+                            intent.putExtra("idioma", idioma); // Añadir la variable de idioma al intent
                             startActivity(intent);
                             finish(); // Cerrar LoginActivity para que no se pueda volver atrás
+
                         } else {
                             // La autenticación falló
                             String message = "Inicio de sesión fallido. Verifica tus credenciales.";

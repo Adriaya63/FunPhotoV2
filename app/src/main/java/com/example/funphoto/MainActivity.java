@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
     private PubliAdapter taskAdapter;
     private List<Publicacion> pubList;
     String username = "";
+    String idioma = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
 
         // Obtener el username del intent
         username = getIntent().getStringExtra("username");
+        idioma = getIntent().getStringExtra("idioma");
 
         // Llamar al método para cargar los datos del usuario
         cargarDatosUsuarios(username);
