@@ -52,6 +52,8 @@ public class SearchActivity extends AppCompatActivity {
         // Obtener el username del intent
         username = getIntent().getStringExtra("username");
         follows = getIntent().getStringExtra("follows");
+        Log.d("SearchRecived",follows);
+        Log.d("SearchUser",username);
 
         // Buscar los ImageButtons por su ID
         ImageButton imageButtonSearch = findViewById(R.id.imageButton);
@@ -142,13 +144,13 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    private void cargarDatosUsuarios(String username) {
+    private void cargarDatosUsuarios(String usuario) {
         // Imprimir el nombre de usuario para verificar si funciona
-        Log.d("Usuario_Main", "**************Username: " + username);
+        Log.d("Usuario_Main", "**************Username: " + usuario);
 
         // Crear un objeto Data con los parámetros
         Data inputData = new Data.Builder()
-                .putString("usuario", username)
+                .putString("usuario", usuario)
                 .build();
 
         Log.d("MainCargarDatUsu1", "Entra bien en Main");

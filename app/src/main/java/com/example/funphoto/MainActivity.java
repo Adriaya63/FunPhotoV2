@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
                 // Acción cuando se hace clic en el botón de búsqueda
                 Toast.makeText(MainActivity.this, "Botón de búsqueda clickeado", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                Log.d("SearchSend",follows);
                 intent.putExtra("username", username);// Agregar el nombre de usuario como extra
                 intent.putExtra("follows", follows);
                 startActivity(intent);
