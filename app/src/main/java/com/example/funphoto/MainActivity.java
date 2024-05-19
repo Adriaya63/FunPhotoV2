@@ -289,9 +289,10 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
                             String user = jsonImage.getString("usuario");
                             String fotoPath = jsonImage.getString("foto");
                             String pieFoto = jsonImage.getString("pie");
+                            String date = jsonImage.getString("fecha");
 
                             // Crear un nuevo objeto Imagen y agregarlo a la lista pubList
-                            Publicacion imagen = new Publicacion(user,fotoPath, pieFoto);
+                            Publicacion imagen = new Publicacion(user,fotoPath, pieFoto,date);
                             publicaciones.add(imagen);
                         }
 

@@ -198,7 +198,7 @@ public class SearchActivity extends AppCompatActivity {
                             Bitmap imagen = BitmapFactory.decodeFile(jsonObject.getString("pImage"));
                             profileImage.setImageBitmap(imagen);
 
-                            Bitmap circularBitmap = ImageHelper.getCircularBitmap(imagen);
+                               Bitmap circularBitmap = ImageHelper.getCircularBitmap(imagen);
                             profileImage.setImageBitmap(circularBitmap);
 
                             // Mostrar los datos del usuario en los TextViews
@@ -272,9 +272,10 @@ public class SearchActivity extends AppCompatActivity {
                             String user = jsonImage.getString("usuario");
                             String fotoPath = jsonImage.getString("foto");
                             String pieFoto = jsonImage.getString("pie");
+                            String date = jsonImage.getString("fecha");
 
                             // Crear un nuevo objeto Imagen y agregarlo a la lista pubList
-                            Publicacion imagen = new Publicacion(user,fotoPath, pieFoto);
+                            Publicacion imagen = new Publicacion(user,fotoPath, pieFoto,date);
                             publicaciones.add(imagen);
                         }
 

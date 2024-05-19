@@ -4,11 +4,13 @@ public class Publicacion {
     private String profileName;
     private String imagePath;
     private String photoDescription;
+    private String date;
 
-    public Publicacion(String profileName, String imagePath, String photoDescription) {
+    public Publicacion(String profileName, String imagePath, String photoDescription,String date) {
         this.profileName = profileName;
         this.imagePath = imagePath;
         this.photoDescription = photoDescription;
+        this.date = date;
     }
 
     public String getProfileName() {
@@ -21,5 +23,8 @@ public class Publicacion {
 
     public String getPhotoDescription() {
         return photoDescription;
+    }
+    public String getDate() {
+        return date;
     }
 }

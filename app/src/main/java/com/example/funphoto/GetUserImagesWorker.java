@@ -83,7 +83,7 @@ public class GetUserImagesWorker extends Worker {
                 String image64 = jsonObject.getString("foto");
                 byte[] decodedBytes = Base64.decode(image64, Base64.DEFAULT);
                 Bitmap imagen = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                String fotoPath = saveImageToStorage(imagen,i);
+                String fotoPath = saveImageToStorage(imagen,i,nombreUsuario);
                 jsonObject.put("foto", fotoPath);
             }
             String userData = jsonArray.toString();
@@ -103,8 +103,8 @@ public class GetUserImagesWorker extends Worker {
             throw new RuntimeException(e);
         }
     }
-    private String saveImageToStorage(Bitmap bitmap, int id) {
-        String path = getApplicationContext().getFilesDir().getPath() + "/User_image"+id+".png";
+    private String saveImageToStorage(Bitmap bitmap, int id,String usuario) {
+        String path = getApplicationContext().getFilesDir().getPath() + "/"+usuario+"_image"+id+".png";
         File file = new File(path);
         try {
             FileOutputStream fos = new FileOutputStream(file);
