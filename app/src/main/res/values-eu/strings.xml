@@ -20,4 +20,5 @@
     <string name="titulo_registrarse">Erregistratu</string>
     <string name="btn_nombrecompleto">Izen Osoa</string>
     <string name="btn_email">Email</string>
+    <string name="btn_nuevapublicacion">Argitalpen berria</string>
 </resources>

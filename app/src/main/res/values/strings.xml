@@ -19,4 +19,5 @@
     <string name="btn_nombrecompleto">Nombre Completo</string>
     <string name="btn_email">Email</string>
     <string name="btn_hacerfotoperfil">Hacer foto de perfil</string>
+    <string name="btn_nuevapublicacion">Nueva publicación</string>
 </resources>
