@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "777110620640",
+    "project_id": "funphoto-57650",
+    "storage_bucket": "funphoto-57650.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:777110620640:android:c437ada99afafeed728385",
+        "android_client_info": {
+          "package_name": "com.example.funphoto"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8Bsi4krCHz63ygQt0Tca3__4A74-PUms"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
