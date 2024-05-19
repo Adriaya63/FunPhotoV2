@@ -20,5 +20,6 @@
     <string name="titulo_registrarse">Sign up</string>
     <string name="btn_nombrecompleto">Full name</string>
     <string name="btn_email">Email</string>
+    <string name="btn_nuevapublicacion">New post</string>
 
 </resources>
