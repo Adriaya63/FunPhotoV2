@@ -1,6 +1,8 @@
 package com.example.funphoto;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
@@ -18,10 +20,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements EditBioDialog.EditBioDialogListener {
+    private RecyclerView recyclerViewTasks;
+    private PubliAdapter taskAdapter;
+    private List<Publicacion> pubList;
     String username = "";
 
     @Override
@@ -34,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
 
         // Llamar al método para cargar los datos del usuario
         cargarDatosUsuarios(username);
+        pubList = cargarFotosUsuario(username);
 
         // Buscar los ImageButtons por su ID
         ImageButton imageButtonSearch = findViewById(R.id.imageButton);
@@ -43,6 +53,11 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
         Button editButton = findViewById(R.id.editButton);
         Button updateFoto = findViewById(R.id.Subir_foto);
 
+        recyclerViewTasks = findViewById(R.id.photosRecyclerView);
+        recyclerViewTasks.setLayoutManager(new LinearLayoutManager(this));
+
+        taskAdapter = new PubliAdapter(pubList);
+        recyclerViewTasks.setAdapter(taskAdapter);
 
         // Asignar OnClickListener a cada botón
         imageButtonSearch.setOnClickListener(new View.OnClickListener() {
@@ -159,12 +174,12 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
                         TextView bioUsuarioTextView = findViewById(R.id.profileDescription);
                         bioUsuarioTextView.setText(jsonObject.getString("Bio"));
 
-                        Bitmap imagen = BitmapFactory.decodeFile(jsonObject.getString("pImage"));
+                        Bitmap imagenperfil = BitmapFactory.decodeFile(jsonObject.getString("pImage"));
                         ImageView imageView = findViewById(R.id.profileImage);
-                        imageView.setImageBitmap(imagen);
+                        imageView.setImageBitmap(imagenperfil);
 
                         // Aplicar la forma circular a la imagen
-                        Bitmap circularBitmap = ImageHelper.getCircularBitmap(imagen);
+                        Bitmap circularBitmap = ImageHelper.getCircularBitmap(imagenperfil);
                         imageView.setImageBitmap(circularBitmap);
 
 
@@ -181,6 +196,68 @@ public class MainActivity extends AppCompatActivity implements EditBioDialog.Edi
             }
         });
     }
+
+    private List<Publicacion> cargarFotosUsuario(String username) {
+        // Crear un objeto Data con los parámetros
+        List<Publicacion> publicaciones = new ArrayList<>();
+        Data inputData = new Data.Builder()
+                .putString("usuario", username)
+                .build();
+
+        // Crear una instancia de WorkManager y programar la tarea para cargar las fotos del usuario
+        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
+        OneTimeWorkRequest cargarFotosUsuarioRequest = new OneTimeWorkRequest.Builder(GetUserImagesWorker.class)
+                .setInputData(inputData)
+                .build();
+        workManager.enqueue(cargarFotosUsuarioRequest);
+
+        // Observar el resultado de la tarea
+        workManager.getWorkInfoByIdLiveData(cargarFotosUsuarioRequest.getId()).observe(MainActivity.this, workInfo -> {
+            if (workInfo != null && workInfo.getState().isFinished()) {
+                // La tarea ha finalizado
+                if (workInfo.getState() == androidx.work.WorkInfo.State.SUCCEEDED) {
+                    // Obtener las fotos del usuario del resultado
+                    String userPhotos = workInfo.getOutputData().getString("userData");
+                    Log.d("FotosUsuario", "Fotos del usuario: " + userPhotos);
+
+                    try {
+                        // Convertir la cadena JSON a JSONArray
+                        JSONArray jsonArray = new JSONArray(userPhotos);
+
+                        // Limpiar la lista de publicaciones antes de agregar nuevas imágenes
+                        publicaciones.clear();
+
+                        // Recorrer el JSONArray y crear objetos Imagen para cada elemento JSON
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonImage = jsonArray.getJSONObject(i);
+                            Log.d("Json",jsonImage.toString());
+                            String user = jsonImage.getString("usuario");
+                            String fotoPath = jsonImage.getString("foto");
+                            String pieFoto = jsonImage.getString("pie");
+
+                            // Crear un nuevo objeto Imagen y agregarlo a la lista pubList
+                            Publicacion imagen = new Publicacion(user,fotoPath, pieFoto);
+                            publicaciones.add(imagen);
+                        }
+
+                        // Notificar al adaptador que los datos han cambiado
+                        taskAdapter.notifyDataSetChanged();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("FotosUsuario", "Error al procesar el JSON: " + e.getMessage());
+                    }
+
+                } else {
+                    // La tarea falló
+                    Log.e("FotosUsuario", "Error al cargar las fotos del usuario.");
+                }
+            }
+
+        });
+        return publicaciones;
+    }
+
 
     private void openEditBioDialog() {
         EditBioDialog editBioDialog = new EditBioDialog();
