@@ -72,6 +72,7 @@ public class GetUserImagesWorker extends Worker {
             }
             reader.close();
 
+
             // Obtener la respuesta como cadena JSON
             String jsonResponse = responseBuilder.toString();
             Log.d("Data",jsonResponse);
