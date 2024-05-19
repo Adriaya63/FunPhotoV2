@@ -21,4 +21,5 @@
     <string name="btn_nombrecompleto">Izen Osoa</string>
     <string name="btn_email">Email</string>
     <string name="btn_nuevapublicacion">Argitalpen berria</string>
+    <string name="btn_eliminar_cuenta">Ezabatu kontua</string>
 </resources>

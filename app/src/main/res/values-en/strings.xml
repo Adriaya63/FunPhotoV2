@@ -21,5 +21,6 @@
     <string name="btn_nombrecompleto">Full name</string>
     <string name="btn_email">Email</string>
     <string name="btn_nuevapublicacion">New post</string>
+    <string name="btn_eliminar_cuenta">" Delete account"</string>
 
 </resources>
