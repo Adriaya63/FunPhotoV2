@@ -9,6 +9,7 @@ import androidx.work.WorkManager;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -34,6 +35,7 @@ public class UploadFotoActivity extends AppCompatActivity {
     private EditText editFotoDesc;
     private String username;
     private String fotoPath;
+    private static final int REQUEST_CODE_SELECT_IMAGE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,23 @@ public class UploadFotoActivity extends AppCompatActivity {
             }
         });
 
+        openGalleryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Crear un Intent para abrir la galería
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                // Verificar que hay aplicaciones disponibles para manejar este tipo de acción
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    // Iniciar la actividad de la galería
+                    startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE);
+                } else {
+                    // Si no hay aplicaciones disponibles, mostrar un mensaje de error
+                    Toast.makeText(UploadFotoActivity.this, "No se encontró ninguna aplicación para abrir la galería", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +95,7 @@ public class UploadFotoActivity extends AppCompatActivity {
                 String newFotoDesc = editFotoDesc.getText().toString();
 
                 if (fotoPath != null) {
+                    Log.d("FotoPath", fotoPath);
                     saveNewFoto(username, fotoPath, newFotoDesc);
                     String message = "Foto subida correctamente";
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
@@ -106,6 +126,28 @@ public class UploadFotoActivity extends AppCompatActivity {
                     Log.d("TakenPicture", "No se ha tomado ninguna foto");
                 }
             });
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Verificar si la solicitud es para seleccionar una imagen de la galería y si la operación fue exitosa
+        if (requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == RESULT_OK && data != null) {
+            // Obtener la URI de la imagen seleccionada
+            Uri selectedImageUri = data.getData();
+
+            // Ahora puedes usar esta URI para obtener la imagen seleccionada y mostrarla en tu ImageView,
+            // o guardar su ruta para usarla más tarde
+            try {
+                Bitmap selectedImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
+                imageToUpload.setImageBitmap(selectedImageBitmap);
+                fotoPath=saveImageToStorage(selectedImageBitmap);
+                Log.d("Envio",fotoPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     private String saveImageToStorage(Bitmap bitmap) {
         String path = getApplicationContext().getFilesDir().getPath() + "/profile_image.png";
